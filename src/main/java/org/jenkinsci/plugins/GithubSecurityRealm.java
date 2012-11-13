@@ -422,7 +422,10 @@ public class GithubSecurityRealm extends SecurityRealm {
 		GHUser user = null;
 
 		GithubAuthenticationToken authToken =  (GithubAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-		
+
+		if (authToken == null)
+			throw new UsernameNotFoundException("no known user: " + username);
+
 		try {
 
 			GroupDetails group = loadGroupByGroupname(username);
@@ -454,7 +457,10 @@ public class GithubSecurityRealm extends SecurityRealm {
 			throws UsernameNotFoundException, DataAccessException {
 
 		GithubAuthenticationToken authToken =  (GithubAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-		
+
+		if (authToken == null)
+			throw new UsernameNotFoundException("no known group: " + groupName);
+
 		try {
 			GHOrganization org = authToken.loadOrganization(groupName);
 
